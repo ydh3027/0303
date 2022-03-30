@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>제이쿼리를 이용한 팝업, 내비게이션</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css">
+  <style>
+    *{margin: 0px;padding: 0px;}
+    ol,ul,li{list-style: none;}
+    a{text-decoration: none;color: #333;}
+    body{
+      font-family: '맑은고딕',Arial,sans-serif;
+      font-size: 12px;
+      color: #333;
+    }
+    #wrap{
+      width: 100%;
+      position: absolute;
+      left: 0px;
+      transition: 0.5s;
+    }
+    .banner{
+      background-color: #ffd8f0;
+      position: relative;
+      height: 60px;
+      text-align: center;
+    }
+    .banner img{width: 414px;}
+    .banner label{
+      position: absolute;right: 20px;top: 14px;
+      z-index: 10;
+    }
+    .banner i.fas{
+      font-size: 36px;
+      color: #333;
+    }
+    input[type=checkbox]{display: none;}
+    header{
+      background: #ffe6ee;
+      height: 80px;
+      text-align: center;
+      position: relative;
+    }
+    header > h1{padding-top: 10px;}
+    header > h1 img{width: 120px;}
+
+    /*전체메뉴서식*/
+    .toggle{
+      position: absolute;left: 4px;top: 14px;
+      width: 50px;height: 50px;
+      
+      cursor: pointer;
+    }
+    .bar{
+      background: #ef426f;
+      display: inline-block;
+      width: 40px;height: 4px;
+      transition: 0.3s;
+      position: absolute;left: 5px;
+    }
+    .toggle > span:first-child{top: 10px;}
+    .toggle > span:nth-child(2){top: 24px;}
+    .toggle > span:last-child{top: 38px;}
+
+    /*토글버튼을 클릭하였을때 */
+    .t_act01{transform: rotate(-45deg);top:24px !important;}
+    .t_act02{display: none!important;}
+    .t_act03{transform: rotate(45deg);top:24px !important;}
+
+    .gnb{
+      width: 80%;height: 100%;
+      background: rgba(214, 66, 66, 0.7);
+      position:absolute;
+      top: 0px;left: -80%;
+      z-index: 100;
+      padding: 20% 3% 0% 5%;
+      box-sizing: border-box;
+    }
+    .gnb a{color: #fff;}
+
+    .wrap_pos{left: 80% !important;}
+    main img{width: 100%;}
+      
+    footer{
+      background: #333;
+    }
+    footer > address{
+      font-style: normal;
+      text-align: center;
+      line-height: 40px;color: #fff;
+    }
+
+    
+  </style>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="./cookie/script/jquery.cookie.js"></script>
+  <script>
+    $(function(){
+
+      $('.toggle').click(function(){ //전체메뉴 클릭시
+        $(this).find('.bar').eq(0).toggleClass('t_act01');
+        $(this).find('.bar').eq(1).toggleClass('t_act02');
+        $(this).find('.bar').eq(2).toggleClass('t_act03');
+
+        $('#wrap').toggleClass('wrap_pos');
+      });
+
+
+
+      //제이쿼리 쿠키를 활용하여 1일동안 팝업 열지 않기
+      /*
+        제이쿼리 쿠키 사용법
+        $.cookie('쿠키이름','쿠키값',{expires:만료일, path:'저장경로'});		 
+      */
+      let $ex = $('#ch');
+
+      //1. 쿠키가 존재한다면 banner를 보이지 않게 한다
+      if($.cookie('popup')=='none'){
+        $('.banner').hide();
+      }
+
+      //2. 사용자가 닫기 버튼을 클릭하면 popup함수를 호출하여 쿠키를 생성한다..
+      $('.banner i.fas').click(function(){
+        closePopup();
+      });
+
+      //3. 쿠키를 생성하는 함수
+      function closePopup(){
+        if($ex.is(':checked')){ //체크박스에 체크가 된 경우
+          $.cookie('popup', 'none',{expires:1, path:'/'}); //쿠키파일 생성하고
+        }
+          $('.banner').slideUp(); //배너를 접어 올린다. == 숨긴다
+      };
+
+    });
+  </script>
+
+    
+</head>
+<body>
+  <input type="checkbox" id="ch">
+  <div id="wrap">  
+  <div class="banner">
+    <img src="./images/pop.jpg" alt=""><label for="ch"><i class="fas fa-times"></i></label>
+  </div>
+  <header>
+    <h1><a href="j21.html" title="메인페이지로 바로가기">
+      <img src="./images/logo.png" alt="">
+    </a></h1>
+    <div class="toggle">
+      <span class="bar">&nbsp;</span>
+      <span class="bar">&nbsp;</span>
+      <span class="bar">&nbsp;</span>
+    </div>
+  </header>
+  <nav class="gnb">
+    <ul>
+      <li><a href="" title="">menu</a></li>
+      <li><a href="" title="">menu</a></li>
+      <li><a href="" title="">menu</a></li>
+      <li><a href="" title="">menu</a></li>
+      <li><a href="" title="">menu</a></li>
+      <li><a href="" title="">menu</a></li>
+      <li><a href="" title="">menu</a></li>
+      <li><a href="" title="">menu</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section>
+      <img src="./images/slide01_01.jpg" alt="">
+    </section>
+  </main>
+  <footer>
+    <address>
+      Copyright &copy;2022 에뛰드 하우스 allright reserved.
+    </address>
+  </footer>
+  </div>
+</body>
+</html>
